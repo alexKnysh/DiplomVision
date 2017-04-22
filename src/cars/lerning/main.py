@@ -1,22 +1,13 @@
 # -*- coding: utf-8 -*-
-from keras.preprocessing.image import ImageDataGenerator
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D
-from keras.callbacks import Callback
-from keras.layers import Activation, Dropout, Flatten, Dense
-from keras import backend as K
 import time
 
+from keras import backend as K
+from keras.layers import Activation, Dropout, Flatten, Dense
+from keras.layers import Conv2D, MaxPooling2D
+from keras.models import Sequential
+from keras.preprocessing.image import ImageDataGenerator
 
-class LossHistory(Callback):
-    def on_train_begin(self, logs={}):
-        self.losses = []
-        self.acc = []
-
-    def on_batch_end(self, batch, logs={}):
-        self.losses.append(logs.get('loss'))
-        self.acc.append(logs.get('acc'))
-
+from src.cars.lerning.module import LossHistory
 
 # dimensions of our images.
 img_width, img_height = 150, 150
