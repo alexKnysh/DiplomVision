@@ -1,5 +1,7 @@
 
 \.idea/
+\src/cars/lerning/data/train/
+\src/cars/lerning/data/validation/
 
 *.jpg
 *.JPG
@@ -10,3 +12,11 @@
 *.db
 
 *.gif
+
+Будет удалено src/cars/lerning/data/
+Будет удалено src/cars/lerning/module/LossHistory/lossHistory.py
+Будет удалено src/cars/train/
+Будет удалено src/cars/validation/
+Будет удалено src/image-net/imageNet/
+Будет удалено src/keras/train/
+Будет удалено src/keras/validation/
