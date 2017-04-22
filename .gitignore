@@ -1,2 +1,12 @@
 
 \.idea/
+
+*.jpg
+*.JPG
+*.bmp
+
+*.h5
+
+*.db
+
+*.gif
