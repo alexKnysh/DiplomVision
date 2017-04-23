@@ -2,6 +2,7 @@
 \.idea/
 \src/cars/lerning/data/train/
 \src/cars/lerning/data/validation/
+\src/cars/lerning/res/
 
 *.jpg
 *.JPG
