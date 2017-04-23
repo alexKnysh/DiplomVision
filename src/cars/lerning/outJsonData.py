@@ -38,4 +38,4 @@ class OutJsonData(object):
         self.img_width = img_width
         self.img_height = img_height
         self.loos_end = self.loss[self.loss.__len__() - 1]
-        self.acc_end = self.loss[self.acc.__len__() - 1]
+        self.acc_end = self.acc[self.acc.__len__() - 1]
