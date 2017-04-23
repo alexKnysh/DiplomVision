@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
-
+import json, io
 from keras import backend as K
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.layers import Conv2D, MaxPooling2D
@@ -8,18 +8,21 @@ from keras.models import Sequential
 from keras.preprocessing.image import ImageDataGenerator
 
 from src.cars.lerning.module import LossHistory
+from outJsonData import OutJsonData
 
-# dimensions of our images.
+# размеры изображений.
 img_width, img_height = 150, 150
 
-train_data_dir = 'C:/aknysh/carsTrain/forwardBack/train'
-validation_data_dir = 'C:/aknysh/carsTrain/forwardBack/validation'
-nb_train_samples = 17540
-nb_validation_samples = 3130
-epochs = 100
+# пути к обучающим и валидационным сетам
+train_data_dir = '/home/aknysh/git/DiplomVision/src/cars/lerning/data/train'
+validation_data_dir = '/home/aknysh/git/DiplomVision/src/cars/lerning/data/validation'
+#  выходные сети (по эпохам)
+weights_path = '/home/aknysh/git/DiplomVision/src/cars/lerning/res/forwardBack'
+nb_train_samples = 10600  # количестко самплев обучения
+nb_validation_samples = 4680  # количестко самплев валидации
+epochs = 100  # кол-во всего эпох
 batch_size = 10
-weights_path = 'C:/aknysh/carsTrain/forwardBack/res/forwardBack'
-
+ep = 1  # c какой эпохи начинать обучение...
 if K.image_data_format() == 'channels_first':
     input_shape = (3, img_width, img_height)
 else:
@@ -72,12 +75,13 @@ validation_generator = test_datagen.flow_from_directory(
     target_size=(img_width, img_height),
     batch_size=batch_size,
     class_mode='binary')
+
 print('Data is generated from folders\n')
-ep = 1
+
 h = object
 
 while ep <= epochs:
-    history = LossHistory()
+    history = LossHistory.LossHistory()
     startTime = time.time()
     if (ep - 1 > 0):
         model.load_weights(weights_path + '_' + str(ep - 1) + '.h5')
@@ -99,18 +103,20 @@ while ep <= epochs:
             validation_steps=nb_validation_samples // batch_size)
     endTime = time.time()
 
-    f = open(weights_path + '_' + str(ep) + '.txt', 'w')
     # вывод в фаил
-    f.write('Loss:\n')
-    for item in history.losses:
-        f.write(str(item) + '\n')
-
-    f.write('Acc:\n')
-    for item in history.acc:
-        f.write(str(item) + '\n')
-
-    f.write('time:  {:.6} \n'.format(endTime - startTime))
-    f.close()
+    outJsonData = OutJsonData(acc=history.acc,
+                              loss=history.losses,
+                              train_samples=nb_train_samples,
+                              validation_samples=nb_validation_samples,
+                              batch_size=batch_size,
+                              img_width=img_width,
+                              img_height=img_height,
+                              epochs=epochs,
+                              ep_time=ep,
+                              time=endTime - startTime)
+    x = vars(outJsonData)
+    with io.open(weights_path + '_' + str(ep) + '.json', 'w') as f:
+        f.write(unicode(json.dumps(x, ensure_ascii=False)))
 
     print('ConvNet is trained\n')
     model.save_weights(weights_path + '_' + str(ep) + '.h5')

@@ -7,5 +7,5 @@ class LossHistory(Callback):
         self.acc = []
 
     def on_batch_end(self, batch, logs={}):
-        self.losses.append(logs.get('loss'))
-        self.acc.append(logs.get('acc'))
+        self.losses.append(float(logs.get('loss')))
+        self.acc.append(float(logs.get('acc')))
