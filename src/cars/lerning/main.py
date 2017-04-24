@@ -3,8 +3,10 @@
 
 from Training import *
 from module.Dynamic.Dynamic import Dynamic
+from slidingWindow.slidingWindow import *
 from Test import *
 from genericModel import *
+import cv2
 
 
 def main(arg):
@@ -41,7 +43,20 @@ def main(arg):
     if (arg.isTrain):
         train(model=model, conf=conf)
     else:
-        test(model=model, conf=conf)
+        # test(model=model, conf=conf)
+        t = SlidingWindow(model=model,
+                          width=36,
+                          height=36,
+                          step_x=36,
+                          step_y=36,
+                          delta=25)
+        img = cv2.imread('/home/aknysh/git/DiplomVision/src/cars/lerning/data/test/001099_5.jpg')
+        cv2.imshow('orig', img)
+        t.sliding_windows(test_img=img,
+                          img_width=conf.img_width,
+                          img_height=conf.img_height,
+                          path_dir='/home/aknysh/git/DiplomVision/src/cars/lerning/data/add_bad',
+                          ns=conf.ns)
     print('---end---\n')
     pass
 
