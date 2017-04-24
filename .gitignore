@@ -1,6 +1,7 @@
 
 \.idea/
 \src/cars/lerning/data/train/
+\src/cars/lerning/data/test/
 \src/cars/lerning/data/validation/
 \src/cars/lerning/res_*/
 \src/ns/
