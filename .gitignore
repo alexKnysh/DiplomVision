@@ -2,11 +2,13 @@
 \.idea/
 \src/cars/lerning/data/train/
 \src/cars/lerning/data/validation/
-\src/cars/lerning/res/
+\src/cars/lerning/res_*/
+\src/ns/
 
 *.jpg
 *.JPG
 *.bmp
+*.pyc
 
 *.h5
 
