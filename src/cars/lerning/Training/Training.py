@@ -38,44 +38,44 @@ def train(model, conf):
 
     while conf.ep <= conf.epochs:
         history = LossHistory.LossHistory()
-    startTime = time.time()
-    if (ep - 1 > 0):
-        model.load_weights(conf.weights_path + '_' + str(conf.ep - 1) + '.h5')
-        model.fit_generator(
-            train_generator,
-            callbacks=[history],
-            steps_per_epoch=conf.nb_train_samples // conf.batch_size,
-            epochs=conf.ep,
-            validation_data=validation_generator,
-            validation_steps=conf.nb_validation_samples // conf.batch_size,
-            initial_epoch=conf.ep - 1)
-    else:
-        model.fit_generator(
-            train_generator,
-            callbacks=[history],
-            steps_per_epoch=conf.nb_train_samples // conf.batch_size,
-            epochs=conf.ep,
-            validation_data=validation_generator,
-            validation_steps=conf.nb_validation_samples // conf.batch_size)
-    endTime = time.time()
+        startTime = time.time()
+        if (conf.ep - 1 > 0):
+            model.load_weights(conf.weights_path + '_' + str(conf.ep - 1) + '.h5')
+            model.fit_generator(
+                train_generator,
+                callbacks=[history],
+                steps_per_epoch=conf.nb_train_samples // conf.batch_size,
+                epochs=conf.ep,
+                validation_data=validation_generator,
+                validation_steps=conf.nb_validation_samples // conf.batch_size,
+                initial_epoch=conf.ep - 1)
+        else:
+            model.fit_generator(
+                train_generator,
+                callbacks=[history],
+                steps_per_epoch=conf.nb_train_samples // conf.batch_size,
+                epochs=conf.ep,
+                validation_data=validation_generator,
+                validation_steps=conf.nb_validation_samples // conf.batch_size)
+        endTime = time.time()
 
-    # вывод в фаил
-    outJsonData = OutJsonData(acc=history.acc,
-                              loss=history.losses,
-                              train_samples=conf.nb_train_samples,
-                              validation_samples=conf.nb_validation_samples,
-                              batch_size=conf.batch_size,
-                              img_width=conf.img_width,
-                              img_height=conf.img_height,
-                              epochs=conf.epochs,
-                              ep_time=conf.ep,
-                              time=endTime - startTime)
-    x = vars(outJsonData)
-    with io.open(conf.weights_path + '_' + str(conf.ep) + '.json', 'w') as f:
-        f.write(unicode(json.dumps(x, ensure_ascii=False)))
+        # вывод в фаил
+        outJsonData = OutJsonData(acc=history.acc,
+                                  loss=history.losses,
+                                  train_samples=conf.nb_train_samples,
+                                  validation_samples=conf.nb_validation_samples,
+                                  batch_size=conf.batch_size,
+                                  img_width=conf.img_width,
+                                  img_height=conf.img_height,
+                                  epochs=conf.epochs,
+                                  ep_time=conf.ep,
+                                  time=endTime - startTime)
+        x = vars(outJsonData)
+        with io.open(conf.weights_path + '_' + str(conf.ep) + '.json', 'w') as f:
+            f.write(unicode(json.dumps(x, ensure_ascii=False)))
 
-    print('ConvNet is trained\n')
-    model.save_weights(conf.weights_path + '_' + str(conf.ep) + '.h5')
+        print('ConvNet is trained\n')
+        model.save_weights(conf.weights_path + '_' + str(conf.ep) + '.h5')
 
-    print('ConvNet is saved\n')
-    conf.ep += 1
+        print('ConvNet is saved\n')
+        conf.ep += 1

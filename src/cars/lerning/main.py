@@ -22,14 +22,14 @@ def main(arg):
     # размеры изображений.
     conf.img_width, conf.img_height = 100, 100
     # пути к обучающим и валидационным сетам
-    conf.train_data_dir = '/home/aknysh/git/DiplomVision/src/cars/lerning/data/train'
-    conf.validation_data_dir = '/home/aknysh/git/DiplomVision/src/cars/lerning/data/validation'
+    conf.train_data_dir = '/home/aknysh/db/data/train'
+    conf.validation_data_dir = '/home/aknysh/db/data/validation'
     #  выходные сети (по эпохам)
     conf.weights_path = '/home/aknysh/git/DiplomVision/src/cars/lerning/res/forwardBack'
     # директория с тестовыми данными.
     conf.path_test = '/home/aknysh/git/DiplomVision/src/cars/lerning/data/validation'
-    conf.nb_train_samples = 10600  # количестко самплев обучения
-    conf.nb_validation_samples = 4680  # количестко самплев валидации
+    conf.nb_train_samples = 20372  # количестко самплев обучения
+    conf.nb_validation_samples = 12311  # количестко самплев валидации
     conf.epochs = 100  # кол-во всего эпох
     conf.batch_size = 10
     # c какой эпохи начинать обучение...
@@ -64,5 +64,5 @@ def main(arg):
 # отправная точка приложения.
 if __name__ == '__main__':
     arg = Dynamic()
-    arg.isTrain = False
+    arg.isTrain = True
     main(arg)
