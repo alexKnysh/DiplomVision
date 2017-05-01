@@ -65,6 +65,8 @@ class SlidingWindow:
             w_img = test_img.shape[1]
             is_width = True
             is_heigh = True
+            res_img = test_img.copy()
+            index = 0
             while is_width | is_heigh:
                 # определили смещение
                 _y_delta = self._solve_first_position(self.height, h_img)
@@ -77,36 +79,38 @@ class SlidingWindow:
 
                     while (x + self.width) <= (w_img - _x_delta):
                         _img = test_img.copy()
-                        # TODO: Тут будет вызов функции распознавания
-
-                        # self.model.load_weights(ns)
-                        # self.model.compile(loss='binary_crossentropy',
-                        #                    optimizer='rmsprop',
-                        #                    metrics=['accuracy'])
-                        img_Roi = _img[y:y+self.height, x:x+self.width ]
+                        self.model.load_weights(ns)
+                        self.model.compile(loss='binary_crossentropy',
+                                           optimizer='rmsprop',
+                                           metrics=['accuracy'])
+                        img_Roi = _img[y:y + self.height, x:x + self.width]
+                        img_Roi = cv2.resize(img_Roi, (img_width, img_height), interpolation=cv2.INTER_LINEAR)
                         cv2.imshow('test0', img_Roi)
-                        cv2.imwrite(path_dir +'/'+ str(uuid.uuid4())+'.jpg',img_Roi)
+                        # cv2.imwrite(path_dir +'/'+ str(uuid.uuid4())+'.jpg',img_Roi)
                         cv2.rectangle(_img, (x, y), (x + self.width, y + self.height), (255, 7, 7), 2)
 
-                        # x_t = img_to_array(img_Roi)  # this is a Numpy array with shape (3, 150, 150)
-                        # x_t = x_t.reshape((1,) + x_t.shape)  # this is a Numpy array with shape (1, 3, 150, 150)
-                        # sample_datagen = ImageDataGenerator(rescale=1. / 255)
-                        # sample_gen = sample_datagen.flow(x_t, batch_size=1)
-                        #
-                        # start = time.time()
-                        # out = self.model.predict_generator(sample_gen, 1)
-                        # stop = time.time()
-                        # sec = stop - start
-                        # print("predict time = %.4f sec" % sec, '\tout =', out[0][0])
-                        # if (out < 0.5):
-                        #     print('\tIt is a bad')
-                        # else:
-                        #     print('\tIt is a good')
-                        # pass
+                        x_t = img_to_array(img_Roi)  # this is a Numpy array with shape (3, 150, 150)
+                        x_t = x_t.reshape((1,) + x_t.shape)  # this is a Numpy array with shape (1, 3, 150, 150)
+                        sample_datagen = ImageDataGenerator(rescale=1. / 255)
+                        sample_gen = sample_datagen.flow(x_t, batch_size=1)
+
+                        start = time.time()
+                        out = self.model.predict_generator(sample_gen, 1)
+                        stop = time.time()
+                        sec = stop - start
+                        print("predict time = %.4f sec" % sec, '\tout =', out[0][0])
+                        if (out < 0.5):
+                            print('\tIt is a bad')
+                        else:
+                            cv2.rectangle(res_img, (x, y), (x + self.width, y + self.height), (255, 7, 7), 2)
+                            print('\tIt is a good')
+                        pass
                         cv2.imshow('test1', _img)
                         cv2.waitKey(5)
                         x = x + self.step_x
                     y = y + self.step_y
+                    index += 1
+                    cv2.imwrite(path_dir + '/' + str(uuid.uuid4()) + '_' + str(index) + '.jpg', res_img)
 
                 self.width = self.width + self.delta
                 self.height = self.height + self.delta
