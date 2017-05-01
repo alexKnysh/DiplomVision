@@ -34,10 +34,9 @@ def train(model, conf):
 
     print('Data is generated from folders\n')
 
-    h = object
-
     while conf.ep <= conf.epochs:
         history = LossHistory.LossHistory()
+        # test = TestCallback()
         startTime = time.time()
         if (conf.ep - 1 > 0):
             model.load_weights(conf.weights_path + '_' + str(conf.ep - 1) + '.h5')
@@ -59,6 +58,8 @@ def train(model, conf):
                 validation_steps=conf.nb_validation_samples // conf.batch_size)
         endTime = time.time()
 
+        scoreSeg = model.evaluate_generator(validation_generator, conf.nb_validation_samples)
+
         # вывод в фаил
         outJsonData = OutJsonData(acc=history.acc,
                                   loss=history.losses,
@@ -78,4 +79,5 @@ def train(model, conf):
         model.save_weights(conf.weights_path + '_' + str(conf.ep) + '.h5')
 
         print('ConvNet is saved\n')
+
         conf.ep += 1
