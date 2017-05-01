@@ -70,6 +70,10 @@ def train(model, conf):
                                   img_height=conf.img_height,
                                   epochs=conf.epochs,
                                   ep_time=conf.ep,
+                                  val_loss=scoreSeg[0],
+                                  val_acc=scoreSeg[1],
+                                  val_recall=scoreSeg[2],
+                                  val_precision=scoreSeg[3],
                                   time=endTime - startTime)
         x = vars(outJsonData)
         with io.open(conf.weights_path + '_' + str(conf.ep) + '.json', 'w') as f:

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 # <autor>Кныш Александр</autor>
 
+
 from Training import *
 from module.Dynamic.Dynamic import Dynamic
 from slidingWindow.slidingWindow import *
 from Test import *
 from genericModel import *
+
+from src.cars.lerning.out_excel import create_log
 
 
 def main(arg):
@@ -43,6 +46,7 @@ def main(arg):
                          path_save=conf.weights_path)
     if (arg.isTrain):
         train(model=model, conf=conf)
+        create_log(conf=conf)
     else:
         model.load_weights(conf.ns)
         model.compile(loss='binary_crossentropy',
@@ -52,12 +56,12 @@ def main(arg):
                                recall_threshold(0.5)])
         print('Model is compiled\n')
         test(model=model, conf=conf)
-    print('---end---\n')
-    pass
+
+        print('---end---\n')
+        pass  # отправная точка приложения.
 
 
-# отправная точка приложения.
 if __name__ == '__main__':
     arg = Dynamic()
-    arg.isTrain = False
+    arg.isTrain = True
     main(arg)
