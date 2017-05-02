@@ -24,12 +24,12 @@ def main(arg):
     # Конфигурационный объект
     conf = Dynamic()
     # размеры изображений.
-    conf.img_width, conf.img_height = 24, 24
+    conf.img_width, conf.img_height = 36, 36
     # пути к обучающим и валидационным сетам
     conf.train_data_dir = '/home/aknysh/db/data/train'
     conf.validation_data_dir = '/home/aknysh/db/data/validation'
     #  выходные сети (по эпохам)
-    conf.weights_path = '/home/aknysh/git/DiplomVision/src/cars/lerning/cars/24x24_12311'
+    conf.weights_path = '/home/aknysh/git/DiplomVision/src/cars/lerning/cars/36x36_12311'
     # директория с тестовыми данными.
     conf.path_test = '/home/aknysh/db/data/test'
     conf.testCount = 2700
@@ -126,11 +126,12 @@ def main(arg):
             ws.write(i, 21, out_json.timeSec)
             ws.write(i, 22, conf.testCount)
             i += 1
+            print i
         w.save(conf.ns + '/test_res.xls')
         pass  # отправная точка приложения.
 
 
 if __name__ == '__main__':
     arg = Dynamic()
-    arg.isTrain = False
+    arg.isTrain = True
     main(arg)

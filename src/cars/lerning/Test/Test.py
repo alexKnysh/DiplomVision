@@ -17,7 +17,7 @@ def test(model, conf):
     little_datagen = ImageDataGenerator(rescale=1. / 255)
 
     validation_generator = little_datagen.flow_from_directory(
-        conf.validation_data_dir,
+        conf.path_test,
         target_size=(conf.img_width, conf.img_height),
         batch_size=conf.batch_size,
         class_mode='binary')
@@ -25,7 +25,7 @@ def test(model, conf):
     start = time.time()
     out = model.predict_generator(validation_generator, conf.testCount)
     stop = time.time()
-    test = model.evaluate_generator(validation_generator, conf.testCount, workers=100)
+    test = model.evaluate_generator(validation_generator, conf.testCount, workers=1000)
     out_json = Dynamic()
     out_json.loss = test[0]
     out_json.accuracy = test[1]
