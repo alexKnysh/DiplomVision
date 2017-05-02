@@ -4,7 +4,6 @@ import io
 from keras.preprocessing.image import ImageDataGenerator
 import time
 import json
-
 from src.cars.lerning.module.Dynamic.Dynamic import Dynamic
 
 
@@ -14,17 +13,8 @@ def test(model, conf):
     PS: тестирование средствами keras 
     :return: 
     '''
-    # model.load_weights(conf.ns)
-    # model.compile(loss='binary_crossentropy',
-    #               optimizer='rmsprop',
-    #               metrics=['accuracy'])
     print('Model is compiled\n')
-    print (model.metrics_names)
     little_datagen = ImageDataGenerator(rescale=1. / 255)
-    little_generator = little_datagen.flow_from_directory(
-        conf.path_test,
-        target_size=(conf.img_width, conf.img_height),
-        batch_size=1)
 
     validation_generator = little_datagen.flow_from_directory(
         conf.validation_data_dir,
@@ -32,9 +22,8 @@ def test(model, conf):
         batch_size=conf.batch_size,
         class_mode='binary')
 
-    # save_to_dir='/home/aknysh/git/DiplomVision/src/cars/lerning/cars/test',
     start = time.time()
-    out = model.predict_generator(validation_generator, 10)
+    out = model.predict_generator(validation_generator, conf.testCount)
     stop = time.time()
     test = model.evaluate_generator(validation_generator, conf.testCount, workers=100)
     out_json = Dynamic()
@@ -51,3 +40,4 @@ def test(model, conf):
     with io.open('test.' + '.json', 'w') as f:
         f.write(unicode(json.dumps(x, ensure_ascii=False)))
         # print(out)
+    return out_json

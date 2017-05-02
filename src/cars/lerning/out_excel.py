@@ -43,8 +43,16 @@ def create_log(conf):
             ws.write(i, 0, file)
             ws.write(i, 1, data['loos_end'])
             ws.write(i, 2, data['acc_end'])
-            ws.write(i, 3, data['val_loss'])
-            ws.write(i, 4, data['val_acc'])
+            try:
+                ws.write(i, 3, data['val_loss'])
+            except:
+                ws.write(i, 2, 0)
+
+            try:
+                ws.write(i, 4, data['val_acc'])
+            except:
+                ws.write(i, 4, 0)
+
             try:
                 ws.write(i, 5, data['val_recall'])
             except:
