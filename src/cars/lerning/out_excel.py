@@ -46,7 +46,7 @@ def create_log(conf):
             try:
                 ws.write(i, 3, data['val_loss'])
             except:
-                ws.write(i, 2, 0)
+                ws.write(i, 3, 0)
 
             try:
                 ws.write(i, 4, data['val_acc'])

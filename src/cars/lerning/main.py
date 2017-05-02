@@ -33,9 +33,9 @@ def main(arg):
     # директория с тестовыми данными.
     conf.path_test = '/home/aknysh/db/data/validation/'
     conf.testCount = 12311
-    conf.nb_train_samples = 20372  # количестко самплев обучения
+    conf.nb_train_samples = 17669  # количестко самплев обучения
     conf.nb_validation_samples = 12311  # количестко самплев валидации
-    conf.epochs = 2  # кол-во всего эпох
+    conf.epochs = 20  # кол-во всего эпох
     conf.batch_size = 10
     # c какой эпохи начинать обучение...
     conf.ep = 1
