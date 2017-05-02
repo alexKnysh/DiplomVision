@@ -29,10 +29,10 @@ def main(arg):
     conf.train_data_dir = '/home/aknysh/db/data/train'
     conf.validation_data_dir = '/home/aknysh/db/data/validation'
     #  выходные сети (по эпохам)
-    conf.weights_path = '/home/aknysh/git/DiplomVision/src/cars/lerning/cars/24x24_12311/forwardBack'
+    conf.weights_path = '/home/aknysh/git/DiplomVision/src/cars/lerning/cars/24x24_12311'
     # директория с тестовыми данными.
-    conf.path_test = '/home/aknysh/db/data/validation/'
-    conf.testCount = 12311
+    conf.path_test = '/home/aknysh/db/data/test'
+    conf.testCount = 2700
     conf.nb_train_samples = 17669  # количестко самплев обучения
     conf.nb_validation_samples = 12311  # количестко самплев валидации
     conf.epochs = 20  # кол-во всего эпох
@@ -80,8 +80,7 @@ def main(arg):
         i = 1
         for ns in list:
             print (ns)
-            # model.load_weights(conf.ns + '/' + ns)
-            model.load_weights('/home/aknysh/git/DiplomVision/src/cars/lerning/cars/24x24_12311/forwardBack_109.h5')
+            model.load_weights(conf.ns + '/' + ns)
             model.compile(loss='binary_crossentropy',
                           optimizer='rmsprop',
                           metrics=['accuracy',
@@ -92,7 +91,7 @@ def main(arg):
             file = ns.split('.')
             f = file[0] + '.json'
             print (f)
-            with open(conf.ns + f) as data_file:
+            with open(conf.ns +'/'+ f) as data_file:
                 data = json.load(data_file, encoding='utf-8')
             ws.write(i, 0, f)
             ws.write(i, 1, data['loos_end'])
@@ -133,5 +132,5 @@ def main(arg):
 
 if __name__ == '__main__':
     arg = Dynamic()
-    arg.isTrain = True
+    arg.isTrain = False
     main(arg)
